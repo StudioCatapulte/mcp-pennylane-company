@@ -1,0 +1,20 @@
+[project]
+name = "pennylane_mcp_server"
+version = "0.1.0"
+description = "MCP Server for Pennylane API integration"
+authors = [
+    {name = "Your Name", email = "you@example.com"},
+]
+dependencies = [
+    "mcp",
+    "httpx",
+    "python-dotenv",
+]
+requires-python = ">=3.10"
+
+[project.scripts]
+pennylane-mcp = "pennylane_mcp_server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build" 
