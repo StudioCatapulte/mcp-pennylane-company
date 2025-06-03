@@ -1,0 +1,31 @@
+# MCP Pennylane Configuration for Cursor
+
+## Available MCP Server
+
+This project includes a Model Context Protocol (MCP) server for Pennylane accounting software.
+
+### Server Details
+- **Name**: Pennylane MCP
+- **Version**: 0.1.0
+- **Tools**: 85 tools covering all Pennylane API v2 endpoints
+
+### To use in Cursor:
+
+1. The MCP server is available at: `python src/server.py`
+2. Environment: Uses the local `venv` with all dependencies installed
+3. Configuration: Uses `.env` file with API credentials
+
+### Example MCP usage:
+When you need to interact with Pennylane, you can use the MCP tools directly.
+The server provides access to customers, invoices, products, accounting, and more.
+
+### Available tool categories:
+- **Customers** (6 tools): Customer management
+- **Invoices** (14 tools): Invoice creation and management
+- **Products** (4 tools): Product catalog
+- **Accounting** (19 tools): Journals, entries, balance
+- **Transactions** (8 tools): Bank reconciliation
+- **Suppliers** (11 tools): Supplier invoices
+- **Analytics** (12 tools): Categories and analytics
+- **Files** (6 tools): File attachments
+- **And more...** 

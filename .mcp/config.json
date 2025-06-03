@@ -1,0 +1,21 @@
+{
+  "name": "pennylane",
+  "version": "0.1.0",
+  "description": "MCP server for Pennylane accounting software",
+  "command": "venv/bin/python",
+  "args": ["src/server.py"],
+  "transport": "stdio",
+  "tools": {
+    "count": 85,
+    "categories": [
+      "customers",
+      "invoices", 
+      "products",
+      "accounting",
+      "transactions",
+      "suppliers",
+      "analytics",
+      "files"
+    ]
+  }
+} 

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "pennylane": {
+      "command": "/Users/gsayer/Developement/Incubator/MCP/PENNYLANE/mcp-pennylane-company/venv/bin/python",
+      "args": [
+        "/Users/gsayer/Developement/Incubator/MCP/PENNYLANE/mcp-pennylane-company/src/server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/gsayer/Developement/Incubator/MCP/PENNYLANE/mcp-pennylane-company",
+        "PENNYLANE_API_KEY": "YK7H4urUSX9GA5ld99fpynDmJvcWiK6WWIxHaWRB944"
+      }
+    }
+  }
+} 
