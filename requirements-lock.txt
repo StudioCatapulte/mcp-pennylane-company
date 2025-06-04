@@ -1,0 +1,16 @@
+# Locked dependencies with exact versions
+# Generated from current installation
+# Use this file to ensure reproducible environments
+
+fastmcp==2.6.1
+httpx==0.28.1
+pydantic==2.11.5
+pydantic-settings==2.9.1
+python-dotenv==1.1.0
+starlette==0.47.0
+uvicorn==0.34.3
+
+# Transitive dependencies
+pydantic-core==2.33.2
+httpx-sse==0.4.0
+sse-starlette==2.3.6

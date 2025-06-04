@@ -1,4 +1,13 @@
-"""MCP resources for Pennylane (future implementation)."""
+"""MCP resources for Pennylane."""
 
-# Resources will be implemented in a future version
-# They will provide read-only access to reports and dashboards 
+from .company_resources import *
+
+__all__ = [
+    "get_company_info",
+    "get_chart_of_accounts",
+    "get_journals_list",
+    "get_recent_customers",
+    "get_products_catalog",
+    "get_recent_invoices",
+    "get_analytics_categories",
+] 

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pennylane MCP Test Interface</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #dee2e6;
+        }
+        .loading {
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Pennylane MCP Test Interface</h1>
+        <p>Interface de test pour le serveur MCP Pennylane en mode HTTP</p>
+        <div id="status"></div>
+    </div>
+
+    <div class="container">
+        <h2>Tests disponibles</h2>
+        <button onclick="testHealth()">🏥 Test Health Check</button>
+        <button onclick="testServerInfo()">ℹ️ Server Info</button>
+        <button onclick="testListTools()">🛠️ Lister les outils</button>
+        <button onclick="testListCustomers()">👥 Lister les clients</button>
+        <button onclick="testListProducts()">📦 Lister les produits</button>
+        <button onclick="testCompanyInfo()">🏢 Info entreprise</button>
+    </div>
+
+    <div class="container">
+        <h2>Résultats</h2>
+        <div id="results">
+            <p class="loading">Cliquez sur un bouton pour lancer un test...</p>
+        </div>
+    </div>
+
+    <script>
+        const SERVER_URL = 'http://localhost:9000';
+        
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + (isError ? 'error' : 'success');
+            status.textContent = message;
+        }
+        
+        function showResult(data) {
+            const results = document.getElementById('results');
+            results.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+        
+        function showError(error) {
+            updateStatus('❌ Erreur: ' + error.message, true);
+            showResult({ error: error.message });
+        }
+        
+        async function testHealth() {
+            try {
+                const response = await fetch(`${SERVER_URL}/health`);
+                const data = await response.json();
+                updateStatus('✅ Health check réussi!');
+                showResult(data);
+            } catch (error) {
+                showError(error);
+            }
+        }
+        
+        // Pour les autres tests, nous devons utiliser le client FastMCP
+        // Voici des exemples de ce que ferait chaque test
+        
+        function testServerInfo() {
+            updateStatus('ℹ️ Pour tester les outils MCP, utilisez le client Python ou l\'inspecteur MCP', false);
+            showResult({
+                note: "Les outils MCP nécessitent le protocole MCP complet",
+                example: "Utilisez: python test_http_client.py",
+                inspector: "Ou: npx @modelcontextprotocol/inspector http://localhost:9000"
+            });
+        }
+        
+        function testListTools() {
+            updateStatus('🛠️ 85 outils disponibles dans le serveur MCP', false);
+            showResult({
+                tools_count: 85,
+                categories: [
+                    "Accounting (19 tools)",
+                    "Customers (6 tools)", 
+                    "Invoices (14 tools)",
+                    "Products (4 tools)",
+                    "Suppliers (11 tools)",
+                    "Analytics (12 tools)",
+                    "Files (6 tools)",
+                    "Et plus..."
+                ]
+            });
+        }
+        
+        function testListCustomers() {
+            testServerInfo();
+        }
+        
+        function testListProducts() {
+            testServerInfo();
+        }
+        
+        function testCompanyInfo() {
+            testServerInfo();
+        }
+        
+        // Test automatique au chargement
+        window.onload = () => {
+            testHealth();
+        };
+    </script>
+</body>
+</html> 

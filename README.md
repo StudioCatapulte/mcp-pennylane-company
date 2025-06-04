@@ -1,246 +1,292 @@
-# MCP Pennylane Company
+# MCP Pennylane - Model Context Protocol Server for Pennylane Accounting
 
-Un serveur Model Context Protocol (MCP) pour interagir avec l'API Pennylane v2, permettant aux LLMs d'accéder et de gérer les données comptables via MCP.
+A comprehensive MCP (Model Context Protocol) server that enables LLMs to interact with Pennylane accounting software through tools, resources, and prompts.
 
-## 🚀 Fonctionnalités
+## Features
 
-Ce serveur MCP expose l'ensemble des endpoints de l'API Pennylane v2, organisés en modules. **85 outils disponibles** couvrant :
+### 🛠️ **85 Tools** - Perform actions in Pennylane
+- **Accounting**: Journals, ledger entries, trial balance, fiscal years
+- **Invoicing**: Create, send, and manage customer/supplier invoices
+- **Banking**: Transaction reconciliation and categorization
+- **Analytics**: Categories and analytical reporting
+- **File Management**: Document attachments and uploads
 
-### 📊 Comptabilité (`accounting`)
-- Gestion des journaux comptables
-- Plan comptable (comptes du grand livre)
-- Écritures comptables et lignes d'écriture
-- Lettrage/délettrage
-- Balance générale
-- Exports FEC et Grand Livre Analytique
-- Années fiscales
+### 📊 **7 Resources** - Access structured data
+- Company information and settings
+- Chart of accounts with smart grouping
+- Customer and product catalogs
+- Recent invoices and transactions
+- Analytics categories hierarchy
 
-### 👥 Clients (`customers`)
-- CRUD clients entreprises et particuliers
-- Recherche et filtrage avancés
-- Gestion des informations de facturation
+### 💬 **14 Prompts** - Guided workflows
+- Invoice creation and processing
+- Transaction recording and reconciliation
+- Financial analysis and reporting
+- Period closing procedures
+- Cash flow forecasting
 
-### 💰 Factures clients (`invoices`)
-- Création et gestion des factures
-- Finalisation et envoi par email
-- Import de factures depuis fichiers
-- Gestion des avoirs
-- Modèles de factures
+## Installation
 
-### 📦 Produits (`products`)
-- Catalogue produits/services
-- Gestion des prix et TVA
-
-### 🏢 Fournisseurs (`suppliers`)
-- CRUD fournisseurs
-- Factures fournisseurs
-- Import de factures
-- Suivi des paiements
-
-### 🏦 Transactions bancaires (`transactions`)
-- Liste des comptes bancaires
-- Transactions et rapprochement
-- Matching avec factures
-
-### 📈 Analytique (`analytics`)
-- Catégories analytiques
-- Groupes de catégories
-- Affectation aux factures et écritures
-
-### 📎 Fichiers (`files`)
-- Upload de pièces jointes
-- Annexes de factures
-- Pièces comptables
-
-### 📝 Divers (`misc`)
-- Profil utilisateur
-- Journaux de modifications (changelogs)
-
-## 📋 Prérequis
-
-- Python 3.11+
-- Compte Pennylane avec accès API
-- Clé API Pennylane (ou OAuth pour les partenaires)
-
-## 🛠️ Installation
-
-1. Cloner le repository :
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/mcp-pennylane-company.git
 cd mcp-pennylane-company
 ```
 
-2. Créer un environnement virtuel :
+2. Create a virtual environment:
 ```bash
 python -m venv venv
-source venv/bin/activate  # Sur Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Installer les dépendances :
+3. Install dependencies:
 ```bash
-pip install -e .
+# For production use:
+pip install -r requirements.txt
+
+# For development (includes testing and linting tools):
+pip install -r requirements-dev.txt
+
+# For exact reproducible environment:
+pip install -r requirements-lock.txt
 ```
 
-## ⚙️ Configuration
-
-1. Copier le fichier d'exemple :
+4. Configure environment:
 ```bash
 cp .env.example .env
+# Edit .env with your Pennylane API credentials
 ```
 
-2. Éditer `.env` avec vos informations :
+## Configuration
+
+### API Key Authentication
 ```env
-# Authentification API
-PENNYLANE_API_KEY=votre_cle_api_pennylane
-
-# URL de l'API (optionnel, utilise la prod par défaut)
+PENNYLANE_API_KEY=your_api_key_here
 PENNYLANE_BASE_URL=https://app.pennylane.com/api/external/v2
-
-# Configuration serveur (optionnel)
-PENNYLANE_LOG_LEVEL=INFO
 ```
 
-### Obtenir une clé API
+### OAuth Authentication (Advanced)
+```env
+USE_OAUTH=true
+OAUTH_CLIENT_ID=your_client_id
+OAUTH_CLIENT_SECRET=your_client_secret
+OAUTH_REDIRECT_URI=http://localhost:8000/callback
+```
 
-1. Connectez-vous à votre compte Pennylane
-2. Allez dans Paramètres > API
-3. Générez une nouvelle clé API
-4. Copiez la clé dans votre fichier `.env`
+## Usage with Claude Desktop
 
-## 🚀 Utilisation
-
-### Avec Claude Desktop
-
-1. Ajouter la configuration dans Claude Desktop :
+Add to your Claude Desktop configuration (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "pennylane": {
       "command": "python",
-      "args": ["/chemin/vers/mcp-pennylane-company/src/server.py"],
+      "args": ["/path/to/mcp-pennylane-company/src/server.py"],
       "env": {
-        "PENNYLANE_API_KEY": "votre_cle_api"
+        "PENNYLANE_API_KEY": "your_api_key_here"
       }
     }
   }
 }
 ```
 
-2. Redémarrer Claude Desktop
+## Transport Options
 
-3. Utiliser les outils Pennylane dans vos conversations :
-   - "Liste mes clients"
-   - "Crée une facture pour le client X"
-   - "Quel est le solde du compte 411000 ?"
-   - etc.
+The Pennylane MCP server supports multiple transport protocols:
 
-### En ligne de commande (test)
-
-⚠️ **Important** : N'utilisez PAS `mcp dev` - il n'est pas compatible avec FastMCP.
+### STDIO Transport (Default)
+Best for local tools and Claude Desktop integration:
 
 ```bash
-# Activer l'environnement virtuel
-source venv/bin/activate  # Sur Windows: venv\Scripts\activate
-
-# Définir la variable d'environnement (ou utiliser le fichier .env)
-export PENNYLANE_API_KEY=votre_cle_api
-
-# Lancer le serveur
+# Run with default STDIO transport
 python src/server.py
+
+# Or explicitly specify STDIO
+python src/server.py --transport stdio
 ```
 
-Pour tester le serveur, utilisez l'un des scripts de test :
-- `python test_mcp_proper.py` - Test complet avec séquence d'initialisation
-- `python test_interactive.py` - Mode interactif
-- `python test_list_all_tools.py` - Liste tous les outils disponibles
-
-Pour plus de détails sur le démarrage du serveur, consultez [START_SERVER.md](START_SERVER.md) et [TEST_SERVER.md](TEST_SERVER.md).
-
-## 📚 Liste des outils disponibles
-
-### Clients
-- `pennylane_customers_list` - Lister les clients
-- `pennylane_customers_get` - Obtenir un client
-- `pennylane_customers_create_company` - Créer un client entreprise
-- `pennylane_customers_create_individual` - Créer un client particulier
-- `pennylane_customers_update_company` - Mettre à jour un client entreprise
-- `pennylane_customers_update_individual` - Mettre à jour un client particulier
-
-### Factures
-- `pennylane_invoices_list` - Lister les factures
-- `pennylane_invoices_get` - Obtenir une facture
-- `pennylane_invoices_create` - Créer une facture
-- `pennylane_invoices_update` - Modifier un brouillon
-- `pennylane_invoices_finalize` - Finaliser une facture
-- `pennylane_invoices_send_email` - Envoyer par email
-- `pennylane_invoices_mark_paid` - Marquer comme payée
-- `pennylane_invoices_delete` - Supprimer un brouillon
-- `pennylane_invoices_import` - Importer depuis fichier
-
-### Comptabilité
-- `pennylane_ledger_accounts_list` - Plan comptable
-- `pennylane_ledger_entries_create` - Créer une écriture
-- `pennylane_trial_balance_get` - Obtenir la balance
-- `pennylane_export_fec_create` - Export FEC
-
-(Et bien d'autres... voir la documentation complète)
-
-## 🧪 Tests
+### Streamable HTTP Transport
+Recommended for web deployments and remote access:
 
 ```bash
-# Installer les dépendances de développement
-pip install -e ".[dev]"
+# Run with Streamable HTTP on default port 8000
+python src/server.py --transport streamable-http
 
-# Lancer les tests
-pytest
+# Custom configuration
+python src/server.py --transport streamable-http --host 0.0.0.0 --port 9000
 
-# Avec couverture
-pytest --cov=src
+# With debug logging
+python src/server.py --transport streamable-http --log-level debug
 ```
 
-## 🔧 Développement
+**Features:**
+- Single endpoint for all communication (`/mcp`)
+- Health check endpoint at `/health`
+- Bi-directional communication
+- Automatic connection upgrades for long-running tasks
 
-### Structure du projet
+### Using the HTTP Client
+
+```python
+from fastmcp import Client
+
+# Connect to HTTP server
+async with Client("http://localhost:8000/mcp") as client:
+    # Call tools
+    result = await client.call_tool("pennylane_customers_list", {"limit": 10})
+    
+    # Read resources
+    data = await client.read_resource("pennylane://company/info")
+```
+
+See `examples/http_client_example.py` for a complete example.
+
+### Using with FastMCP CLI
+
+```bash
+# Run with CLI (overrides any transport in code)
+fastmcp run src/server.py --transport streamable-http --port 9000
+
+# Development mode with inspector
+fastmcp dev src/server.py
+```
+
+## Example Workflows
+
+### Creating an Invoice
+```
+1. Check customer exists: Use resource pennylane://customers/recent/10
+2. Get products: Use resource pennylane://products/catalog/20
+3. Get guidance: Use prompt create_invoice_prompt
+4. Create invoice: Use tool pennylane_invoices_create
+5. Send invoice: Use tool pennylane_invoices_send_email
+```
+
+### Recording a Transaction
+```
+1. Get guidance: Use prompt record_transaction_prompt
+2. View accounts: Use resource pennylane://chart_of_accounts/all
+3. Select journal: Use resource pennylane://journals
+4. Create entry: Use tool pennylane_ledger_entries_create
+5. Categorize: Use tool pennylane_ledger_entry_lines_categorize
+```
+
+### Financial Analysis
+```
+1. Set parameters: Use prompt analyze_finances_prompt
+2. Get company info: Use resource pennylane://company/info
+3. View invoices: Use resource pennylane://invoices/recent/customer/50
+4. Generate report: Use prompt generate_report_prompt
+5. Export data: Use tool pennylane_export_analytical_ledger_create
+```
+
+## Resource Examples
+
+### Company Information
+```
+pennylane://company/info
+Returns: Company settings, fiscal years, currency, country
+```
+
+### Chart of Accounts
+```
+pennylane://chart_of_accounts/411  # Customer accounts only
+pennylane://chart_of_accounts/all  # All accounts grouped by type
+```
+
+### Recent Data
+```
+pennylane://customers/recent/20    # Last 20 customers
+pennylane://invoices/recent/customer/10  # Last 10 customer invoices
+pennylane://products/catalog/50    # 50 products from catalog
+```
+
+## Prompt Examples
+
+### Invoice Creation
+```python
+create_invoice_prompt(
+    customer_info="ABC Corp, VAT: FR12345678901",
+    products_services="5 hours consulting at 150€/hour",
+    invoice_type="standard",
+    special_requirements="Net 30 payment terms"
+)
+```
+
+### Transaction Recording
+```python
+record_transaction_prompt(
+    transaction_type="sale",
+    amount=1500.00,
+    description="Consulting services - Project X",
+    date="2024-01-15"
+)
+```
+
+### Financial Analysis
+```python
+analyze_finances_prompt(
+    analysis_period="2024-Q1",
+    focus_areas=["revenue", "cash_flow"],
+    comparison_period="2023-Q4"
+)
+```
+
+## Architecture
 
 ```
-mcp-pennylane-company/
-├── src/
-│   ├── server.py          # Serveur FastMCP principal
-│   ├── config.py          # Configuration
-│   ├── tools/             # Modules d'outils MCP
-│   │   ├── accounting.py  # Outils comptables
-│   │   ├── customers.py   # Gestion clients
-│   │   ├── invoices.py    # Factures clients
-│   │   └── ...
-│   └── utils/
-│       └── api_client.py  # Client HTTP pour l'API
-├── tests/                 # Tests unitaires
-├── pyproject.toml         # Configuration Python
-└── README.md
+src/
+├── server.py          # Main MCP server
+├── mcp_instance.py    # FastMCP configuration
+├── config.py          # Settings management
+├── tools/             # 85 API tools
+├── resources/         # 7 data resources
+├── prompts/           # 14 workflow prompts
+└── utils/             # API client and helpers
 ```
 
-### Ajouter un nouvel endpoint
+## Development
 
-1. Identifier le module approprié dans `src/tools/`
-2. Ajouter une fonction décorée avec `@mcp.tool()`
-3. Documenter les paramètres avec Pydantic Field
-4. Gérer les erreurs avec try/except
-5. Tester la nouvelle fonctionnalité
+### Running Tests
+```bash
+python -m pytest tests/
+```
 
-## 📝 Licence
+### Adding New Features
+1. **Tools**: Add to `src/tools/` following existing patterns
+2. **Resources**: Add to `src/resources/` with proper URI scheme
+3. **Prompts**: Add to `src/prompts/` with clear parameter descriptions
 
-MIT
+## API Coverage
 
-## 🤝 Contribution
+| Category | Coverage | Features |
+|----------|----------|----------|
+| Accounting | ✅ 100% | Journals, entries, accounts, balance |
+| Invoicing | ✅ 100% | Customer/supplier invoices, credit notes |
+| Banking | ✅ 100% | Transactions, reconciliation, accounts |
+| Analytics | ✅ 100% | Categories, groups, categorization |
+| Files | ✅ 100% | Attachments, uploads, appendices |
+| Exports | ✅ 100% | FEC, analytical ledger |
 
-Les contributions sont les bienvenues ! N'hésitez pas à :
-- Signaler des bugs
-- Proposer de nouvelles fonctionnalités
-- Soumettre des pull requests
+## Documentation
 
-## 📞 Support
+- [Complete Feature Guide](documentation/MCP_FEATURES.md)
+- [API Reference](documentation/api_pennylane_doc/)
+- [MCP Protocol Details](documentation/mcp/)
 
-- Documentation API Pennylane : https://pennylane.readme.io/
-- Documentation MCP : https://modelcontextprotocol.io/
-- Issues : https://github.com/yourusername/mcp-pennylane-company/issues 
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## Support
+
+For issues or questions:
+1. Check the [Feature Guide](documentation/MCP_FEATURES.md)
+2. Review server logs for detailed errors
+3. Ensure API credentials are valid
+4. Open an issue on GitHub
+
+---
+
+Built with [FastMCP](https://github.com/jlowin/fastmcp) 🚀 

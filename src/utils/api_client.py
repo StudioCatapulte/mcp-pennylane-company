@@ -46,7 +46,7 @@ class PennylaneAPIClient:
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
                 headers=self.headers,
-                timeout=httpx.Timeout(settings.api_timeout),
+                timeout=httpx.Timeout(settings.request_timeout),
             )
         return self._client
     
@@ -80,7 +80,7 @@ class PennylaneAPIClient:
         client = await self._get_client()
         url = endpoint if endpoint.startswith("http") else f"/{endpoint.lstrip('/')}"
         
-        for attempt in range(settings.api_max_retries):
+        for attempt in range(settings.max_retries):
             try:
                 response = await client.request(
                     method=method,
@@ -93,12 +93,12 @@ class PennylaneAPIClient:
                 return await self._handle_response(response)
             
             except httpx.TimeoutException:
-                if attempt == settings.api_max_retries - 1:
+                if attempt == settings.max_retries - 1:
                     raise PennylaneAPIError("Request timeout")
                 await asyncio.sleep(2 ** attempt)
             
             except httpx.RequestError as e:
-                if attempt == settings.api_max_retries - 1:
+                if attempt == settings.max_retries - 1:
                     raise PennylaneAPIError(f"Request error: {str(e)}")
                 await asyncio.sleep(2 ** attempt)
     
