@@ -29,7 +29,7 @@ A comprehensive MCP (Model Context Protocol) server that enables LLMs to interac
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mcp-pennylane-company.git
+git clone https://github.com/StudioCatapulte/mcp-pennylane-company.git
 cd mcp-pennylane-company
 ```
 
@@ -289,4 +289,10 @@ For issues or questions:
 
 ---
 
-Built with [FastMCP](https://github.com/jlowin/fastmcp) 🚀 
+## Author
+
+**Guillaume Sayer** - [Studio Catapulte](https://catapulte.studio)
+
+---
+
+Built with [FastMCP](https://github.com/jlowin/fastmcp) and the [Model Context Protocol](https://modelcontextprotocol.io) by Anthropic.
