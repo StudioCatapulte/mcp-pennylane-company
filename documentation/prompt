@@ -1,0 +1,13 @@
+Je souhaite développer un MCP (Model context protocol) pour que je puisse intéragir avec l'outil de compta Pennylane à travers un LLM supportant les MCP.
+
+Je souhaite quye tu utilse le framework python fastmcp <>.
+
+Tu trouveras toute la documentation des endpoints de Pennylane ici <>
+
+Propose un plan de developpement complet pour ce MCP. Ensuite passe à son developpement, je veux que tu permettes au MCP d'interagir avec tous les endpoints disponible de Pennylane.
+
+Avant de commencer le developpement tu listeras tous les endpoints/capacité de l'API dans ton plan de developpement. TU mettra a jour l'avancement des fonctionnalités dans ton plan de developpement.
+
+Je te joints également de la documentation supplémentaire plus bas niveau concernant les MCP.
+
+Tu utiliseras également un venv pour isoler les dépendances.

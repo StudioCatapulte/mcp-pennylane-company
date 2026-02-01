@@ -1,0 +1,34 @@
+services:
+  pennylane-mcp:
+    build: .
+    container_name: pennylane-mcp-server
+    ports:
+      - "8000:8000"
+    environment:
+      # Override these with your actual values or use .env file
+      - PENNYLANE_API_KEY=${PENNYLANE_API_KEY}
+      - PENNYLANE_BASE_URL=${PENNYLANE_BASE_URL:-https://app.pennylane.com/api/external/v2}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    command: python src/server.py --transport streamable-http --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # Optional: Nginx reverse proxy for production
+  nginx:
+    image: nginx:alpine
+    container_name: pennylane-mcp-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - pennylane-mcp
+    profiles:
+      - production
+    restart: unless-stopped 
