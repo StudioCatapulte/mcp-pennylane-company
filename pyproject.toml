@@ -1,8 +1,24 @@
 [project]
-name = "mcp-pennylane-company"
-version = "0.1.0"
+name = "mcp-pennylane"
+version = "0.2.0"
 description = "Model Context Protocol server for Pennylane accounting software"
 readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Guillaume Sayer", email = "guillaume@catapulte.studio"},
+]
+maintainers = [
+    {name = "Studio Catapulte", email = "guillaume@catapulte.studio"},
+]
+keywords = ["mcp", "pennylane", "accounting", "claude", "anthropic", "api", "fastmcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 requires-python = ">=3.11"
 dependencies = [
     "fastmcp>=2.6.0",
@@ -19,6 +35,11 @@ dev = [
     "pytest-cov>=4.0.0",
     "ruff>=0.5.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/StudioCatapulte/mcp-pennylane-company"
+Repository = "https://github.com/StudioCatapulte/mcp-pennylane-company"
+Documentation = "https://github.com/StudioCatapulte/mcp-pennylane-company#readme"
 
 [build-system]
 requires = ["hatchling"]
@@ -37,4 +58,4 @@ ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."] 
+pythonpath = ["."]
